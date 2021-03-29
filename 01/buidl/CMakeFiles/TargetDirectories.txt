@@ -1,0 +1,3 @@
+/home/lzm/GAMES101/01/buidl/CMakeFiles/rebuild_cache.dir
+/home/lzm/GAMES101/01/buidl/CMakeFiles/edit_cache.dir
+/home/lzm/GAMES101/01/buidl/CMakeFiles/Rasterizer.dir
