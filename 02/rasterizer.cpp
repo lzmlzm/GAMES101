@@ -9,7 +9,7 @@
 #include <opencv2/opencv.hpp>
 #include <math.h>
 
-
+//加载顶点
 rst::pos_buf_id rst::rasterizer::load_positions(const std::vector<Eigen::Vector3f> &positions)
 {
     auto id = get_next_id();
@@ -17,7 +17,7 @@ rst::pos_buf_id rst::rasterizer::load_positions(const std::vector<Eigen::Vector3
 
     return {id};
 }
-
+//加载索引
 rst::ind_buf_id rst::rasterizer::load_indices(const std::vector<Eigen::Vector3i> &indices)
 {
     auto id = get_next_id();
@@ -25,7 +25,7 @@ rst::ind_buf_id rst::rasterizer::load_indices(const std::vector<Eigen::Vector3i>
 
     return {id};
 }
-
+//加载颜色
 rst::col_buf_id rst::rasterizer::load_colors(const std::vector<Eigen::Vector3f> &cols)
 {
     auto id = get_next_id();
@@ -33,13 +33,13 @@ rst::col_buf_id rst::rasterizer::load_colors(const std::vector<Eigen::Vector3f> 
 
     return {id};
 }
-
+//转换到齐次坐标系
 auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 {
     return Vector4f(v3.x(), v3.y(), v3.z(), w);
 }
 
-
+//判断像素点是否在三角形内
 static bool insideTriangle(int x, int y, const Vector3f* _v)
 {   
     // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
@@ -70,15 +70,19 @@ static std::tuple<float, float, float> computeBarycentric2D(float x, float y, co
     return {c1,c2,c3};
 }
 
+//绘制
 void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf_id col_buffer, Primitive type)
 {
+    
     auto& buf = pos_buf[pos_buffer.pos_id];
+    //记录顶点索引
     auto& ind = ind_buf[ind_buffer.ind_id];
     auto& col = col_buf[col_buffer.col_id];
 
     float f1 = (50 - 0.1) / 2.0;
     float f2 = (50 + 0.1) / 2.0;
 
+    //MVP矩阵
     Eigen::Matrix4f mvp = projection * view * model;
     for (auto& i : ind)
     {
@@ -115,6 +119,7 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
         t.setColor(1, col_y[0], col_y[1], col_y[2]);
         t.setColor(2, col_z[0], col_z[1], col_z[2]);
 
+        //光栅化
         rasterize_triangle(t);
     }
 }
@@ -134,8 +139,8 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
 
 
-    //Bouding box
-    float min_x = std::min(v[1][0],std::min(v[1][0],v[2][0]));
+    //Bouding box找到三角形的最小包围盒的xy范围
+    float min_x = std::min(v[0][0],std::min(v[1][0],v[2][0]));
     float max_x = std::max(v[0][0], std::max(v[1][0], v[2][0]));
     float min_y = std::min(v[0][1], std::min(v[1][1], v[2][1]));
     float max_y = std::max(v[0][1], std::max(v[1][1], v[2][1]));
@@ -145,7 +150,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 	min_y = (int)std::floor(min_y);
 	max_y = (int)std::ceil(max_y);
 
-    bool MSAA = false;
+    bool MSAA = true;
     if (MSAA) {
 		// 格子里的细分四个小点坐标
 		std::vector<Eigen::Vector2f> pos
@@ -174,6 +179,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 						float w_reciprocal = 1.0 / (alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
 						float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
 						z_interpolated *= w_reciprocal;
+                        //更新z深度
 						minDepth = std::min(minDepth, z_interpolated);
 						count++;
 					}

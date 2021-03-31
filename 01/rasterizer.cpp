@@ -134,6 +134,7 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 
 void rst::rasterizer::draw(rst::pos_buf_id pos_buffer, rst::ind_buf_id ind_buffer, rst::Primitive type)
 {
+    //
     if (type != rst::Primitive::Triangle)
     {
         throw std::runtime_error("Drawing primitives other than triangle is not implemented yet!");

@@ -6,45 +6,29 @@
 
 #IncludeRegexTransform: 
 
-/home/lzm/GAMES101/02/Triangle.hpp
+/home/lzm/GAMES101/MugRender/Render.cpp
+Triangle.hpp
+/home/lzm/GAMES101/MugRender/Triangle.hpp
+RenderEngine.hpp
+/home/lzm/GAMES101/MugRender/RenderEngine.hpp
 eigen3/Eigen/Eigen
 -
-
-/home/lzm/GAMES101/02/global.hpp
-
-/home/lzm/GAMES101/02/main.cpp
 iostream
 -
 opencv2/opencv.hpp
 -
-rasterizer.hpp
-/home/lzm/GAMES101/02/rasterizer.hpp
-global.hpp
-/home/lzm/GAMES101/02/global.hpp
-Triangle.hpp
-/home/lzm/GAMES101/02/Triangle.hpp
 
-/home/lzm/GAMES101/02/rasterizer.cpp
+/home/lzm/GAMES101/MugRender/RenderEngine.hpp
+Triangle.hpp
+/home/lzm/GAMES101/MugRender/Triangle.hpp
 algorithm
 -
-vector
--
-rasterizer.hpp
-/home/lzm/GAMES101/02/rasterizer.hpp
-opencv2/opencv.hpp
--
-math.h
--
-
-/home/lzm/GAMES101/02/rasterizer.hpp
 eigen3/Eigen/Eigen
 -
-algorithm
+
+/home/lzm/GAMES101/MugRender/Triangle.hpp
+eigen3/Eigen/Eigen
 -
-global.hpp
-/home/lzm/GAMES101/02/global.hpp
-Triangle.hpp
-/home/lzm/GAMES101/02/Triangle.hpp
 
 /usr/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp

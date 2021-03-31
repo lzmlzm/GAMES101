@@ -1,0 +1,3 @@
+/home/lzm/GAMES101/MugRender/build/CMakeFiles/rebuild_cache.dir
+/home/lzm/GAMES101/MugRender/build/CMakeFiles/edit_cache.dir
+/home/lzm/GAMES101/MugRender/build/CMakeFiles/RenderTest.dir
