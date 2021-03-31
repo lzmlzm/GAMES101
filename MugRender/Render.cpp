@@ -176,13 +176,34 @@ int main(int argc, const char** argv)
     //Z轴的远近
     Eigen::Vector3f eye_pos = {0, 0, 10};
 
-    //三个顶点
-    std::vector<Eigen::Vector3f> pos{{2, 0, -2}, {0, 2, -2}, {-2, 0, -2}};
-    //顶点索引
-    std::vector<Eigen::Vector3i> ind{{0, 1, 2}};
+    std::vector<Eigen::Vector3f> pos
+        {
+                {2, 0, -2},
+                {0, 2, -2},
+                {-2, 0, -2},
+                {3.5, -1, -5},
+                {2.5, 1.5, -5},
+                {-1, 0.5, -5}
+        };
+    std::vector<Eigen::Vector3i> ind
+        {
+                {0, 1, 2},
+                {3, 4, 5}
+        };
+    std::vector<Eigen::Vector3f> cols
+        {
+                {217.0, 238.0, 185.0},
+                {217.0, 238.0, 185.0},
+                {217.0, 238.0, 185.0},
+                {185.0, 217.0, 238.0},
+                {185.0, 217.0, 238.0},
+                {185.0, 217.0, 238.0}
+        };
 
     auto pos_id = engine.load_positions(pos);
     auto ind_id = engine.load_indexs(ind);
+    auto col_id = engine.load_colors(cols);
+
 
     int key = 0;
     int frame_count = 0;
@@ -194,7 +215,7 @@ int main(int argc, const char** argv)
         engine.set_view(get_view_matrix(eye_pos));
         engine.set_projection(get_projection_matrix(45, 1, 0.1, 50));
 
-        engine.draw(pos_id, ind_id, RenderEngine::renderType::Triangle);
+        engine.draw(pos_id, ind_id, col_id,RenderEngine::renderType::Triangle);
         cv::Mat image(700, 700, CV_32FC3, engine.frame_buffer().data());
         image.convertTo(image, CV_8UC3, 1.0f);
 
@@ -213,11 +234,12 @@ int main(int argc, const char** argv)
         engine.set_projection(get_projection_matrix(45, 1, 0.1, 50));
 
         //Draw
-        engine.draw(pos_id, ind_id, RenderEngine::renderType::Triangle);
+        engine.draw(pos_id, ind_id,col_id, RenderEngine::renderType::Triangle);
         //生成一幅700*700的image
         cv::Mat image(700, 700, CV_32FC3, engine.frame_buffer().data());
         //类型转换
         image.convertTo(image, CV_8UC3, 1.0f);
+        cv::cvtColor(image, image, cv::COLOR_RGB2BGR);
         cv::imshow("image", image);
         key = cv::waitKey(10);
 

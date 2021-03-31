@@ -6,6 +6,7 @@
 #include "Triangle.hpp"
 #include <algorithm>
 #include <eigen3/Eigen/Eigen>
+#include <cfloat>
 using namespace Eigen;
 
 namespace RenderEngine{
@@ -42,6 +43,11 @@ namespace RenderEngine{
         int index_id = 0;
     };
 
+    struct col_buf_id
+    {
+        int col_id = 0;
+    };
+
     //渲染引擎
     class Engine
     {
@@ -52,6 +58,8 @@ namespace RenderEngine{
         position_buf_id load_positions(const std::vector<Eigen::Vector3f>& positions);
         //加载顶点索引
         index_buf_id load_indexs(const std::vector<Eigen::Vector3i>& indexs);
+
+        col_buf_id load_colors(const std::vector<Eigen::Vector3f>& colors);
         //设置模型矩阵
         void set_model(const Eigen::Matrix4f & m);
         //设置视图矩阵
@@ -63,7 +71,7 @@ namespace RenderEngine{
         //清理屏幕
         void clear(renderBuffers buffer);
         //绘制基本渲染类型：线/三角形
-        void draw(position_buf_id pos_buf, index_buf_id ind_buf,renderType type);
+        void draw(position_buf_id pos_buf, index_buf_id ind_buf, col_buf_id col_buffer,renderType type);
         //
         std::vector<Eigen::Vector3f> &frame_buffer(){
             return frame_buf;
@@ -75,6 +83,7 @@ namespace RenderEngine{
         Eigen::Matrix4f projection;
         std::map<int, std::vector<Eigen::Vector3f>> pos_buf;
         std::map<int, std::vector<Eigen::Vector3i>> ind_buf;
+        std::map<int, std::vector<Eigen::Vector3f>> col_buf;
 
         int width,height;
         //帧缓存
@@ -92,6 +101,7 @@ namespace RenderEngine{
         //画直线算法
         void draw_Line(Eigen::Vector3f begin, Eigen::Vector3f end);
         void renderFrame(const Triangle &t);
+        void rasterize_triangle(const Triangle& t);
     };
     
 }
